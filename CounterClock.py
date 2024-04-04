@@ -37,12 +37,12 @@ while True:
     
 
     if(count > CAUTION_LIMIT and OBJECT_STATUS == "EYE_ABSENT"): 
-        pygame.mixer.music.load("airplane-cockpit-alarm.mp3")
+        pygame.mixer.music.load("resources/airplane-cockpit-alarm.mp3")
         print("[ACCIDENT HAZARD] : Please Drive the Vehicle")
         pygame.mixer.music.play()
 
     elif ( count > 5 or count<CAUTION_LIMIT ): 
-        pygame.mixer.music.load("cabinchime.mp3")
+        pygame.mixer.music.load("resources/cabinchime.mp3")
         print("[CAUTION] : Please focus")
         pygame.mixer.music.play()
         

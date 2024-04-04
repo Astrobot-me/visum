@@ -4,7 +4,6 @@ import pygame
 import cv2 
 
 
-
 pygame.mixer.init()
 
 pygame.mixer.music.set_volume(1.0)
@@ -15,7 +14,7 @@ cv = cv2.VideoCapture("resources/simpleman.mp4")
 face_cascade = cv2.CascadeClassifier("CascadeClassifiers/haarcascade_frontalface_default.xml")
 
 OBJECT_STATUS = "EYE_ABSENT" 
-CAUTION_LIMIT = 20
+CAUTION_LIMIT = 10
 time_started = time.time()
 count = 0.0
 
@@ -45,7 +44,7 @@ while True:
             img = cv2.resize(img,(800,500))
             cv2.imshow("Frame",img)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'): 
+    if cv2.waitKey(10) & 0xFF == ord('q'): 
             break
                         
 
@@ -56,6 +55,7 @@ while True:
         pygame.mixer.music.load("resources/airplane-cockpit-alarm.mp3")
         print("[ACCIDENT HAZARD] : Please Drive the Vehicle")
         pygame.mixer.music.play()
+        
 
     elif ( count > 5 or count<CAUTION_LIMIT ): 
         pygame.mixer.music.load("resources/cabinchime.mp3")
