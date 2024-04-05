@@ -15,7 +15,7 @@ while True:
     # pointB = (450,450)
     gray_frame = cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
 
-    print(f"Image size:  {gray_frame}")
+    # print(f"Image size:  {gray_frame}")
 
     faces = face_cascade.detectMultiScale(gray_frame,1.3,5) #return tuple
     for x,y,w,h in faces:
@@ -25,6 +25,12 @@ while True:
         face_crop = gray_frame[y:y+h,x:x+w]
         color_face_crop = frame[y:y+h, x:x+w]
         eye_locations = eye_cascade.detectMultiScale(face_crop)
+        
+
+        if len(eye_locations) > 0 :
+            print("EYE_PRESENT")
+        else:
+            print("EYE_ABSENT")
 
     
 
