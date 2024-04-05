@@ -28,11 +28,16 @@ while True:
     Isframe,img = cv.read()
     gray_frame = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray_frame,1.3,5)
+
     
+
     if len(faces) > 0:
         OBJECT_STATUS = "EYE_PRESENT"
+        print(OBJECT_STATUS)
     else:
          OBJECT_STATUS =  "EYE_ABSENT"
+         print(OBJECT_STATUS)
+         
 
     for x,y,w,h in faces:
         cv2.rectangle(img, (x,y), (x+w,y+h), (255, 255, 0), thickness=3, lineType=cv2.LINE_AA)
@@ -51,13 +56,13 @@ while True:
                             
     
 
-    if(count > CAUTION_LIMIT and OBJECT_STATUS == "EYE_ABSENT"): 
-        pygame.mixer.music.load("resources/airplane-cockpit-alarm.mp3")
-        print("[ACCIDENT HAZARD] : Please Drive the Vehicle")
-        pygame.mixer.music.play()
+    # if(count > CAUTION_LIMIT and OBJECT_STATUS == "EYE_ABSENT"): 
+    #     pygame.mixer.music.load("resources/airplane-cockpit-alarm.mp3")
+    #     print("[ACCIDENT HAZARD] : Please Drive the Vehicle")
+    #     pygame.mixer.music.play()
         
 
-    elif ( count > 5 or count<CAUTION_LIMIT ): 
-        pygame.mixer.music.load("resources/cabinchime.mp3")
-        print("[CAUTION] : Please focus")
-        pygame.mixer.music.play()
+    # elif ( count > 5 or count<CAUTION_LIMIT ): 
+    #     pygame.mixer.music.load("resources/cabinchime.mp3")
+    #     print("[CAUTION] : Please focus")
+    #     pygame.mixer.music.play()
