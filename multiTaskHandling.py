@@ -49,6 +49,11 @@ def CounterClock():
 
 def getVideofeed():
     global OBJECT_STATUS
+
+    if cv.get(cv2.CAP_PROP_POS_FRAMES) == cv.get(cv2.CAP_PROP_FRAME_COUNT):
+        cv.set(cv2.CAP_PROP_POS_FRAMES,0)
+
+
     while True:
         Isframe,img = cv.read()
         gray_frame = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
@@ -73,7 +78,7 @@ def getVideofeed():
 
         
         # stops this process
-        if cv2.waitKey(10) & 0xFF == ord('q'): 
+        if cv2.waitKey(1) & 0xFF == ord('q'): 
             break
     
 
