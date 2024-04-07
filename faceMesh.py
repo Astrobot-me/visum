@@ -5,12 +5,13 @@ import math
 
 class GetFaceMesh:
 
-    def __init__(self, staticMode=False, maxFaces=1, minDetectionCon=0.5, minTrackCon=0.5):
+    def __init__(self, staticMode=True, maxFaces=1, minDetectionCon=0.5, minTrackCon=0.5,landmark=False):
     
         self.staticMode = staticMode
         self.maxFaces = maxFaces
         self.minDetectionCon = minDetectionCon
         self.minTrackCon = minTrackCon
+        self.landmark = landmark
 
         self.mpDraw = mediapipe.solutions.drawing_utils
         self.mpFaceMesh = mediapipe.solutions.face_mesh
@@ -18,8 +19,9 @@ class GetFaceMesh:
         self.faceMesh = self.mpFaceMesh.FaceMesh(static_image_mode=self.staticMode,
                                                  max_num_faces=self.maxFaces,
                                                  min_detection_confidence=self.minDetectionCon,
-                                                 min_tracking_confidence=self.minTrackCon)
-        self.drawSpec = self.mpDraw.DrawingSpec(thickness=1, circle_radius=2)
+                                                 min_tracking_confidence=self.minTrackCon,
+                                                 refine_landmarks=self.landmark)
+        self.drawSpec = self.mpDraw.DrawingSpec(thickness=1, circle_radius=1)
 
     def findFaceMesh(self, img, draw=True):
        
@@ -61,7 +63,7 @@ class GetFaceMesh:
             cv2.circle(img, (x1, y1), 1, (255, 0, 255), cv2.FILLED)
             cv2.circle(img, (x2, y2), 1, (255, 0, 255), cv2.FILLED)
             cv2.line(img, (x1, y1), (x2, y2), (255, 0, 255), 1)
-            cv2.circle(img, (cx, cy), 1, (255, 0, 255), cv2.FILLED)
+            # cv2.circle(img, (cx, cy), 1, (255, 0, 255), cv2.FILLED)
             return length,info, img
         else:
             return length, info
