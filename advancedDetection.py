@@ -3,7 +3,7 @@ import time
 import mediapipe as mp
 import pygame
 
-import cvzone
+
 from faceMesh import GetFaceMesh
 
 ear = [0.262,0.256,0.255,0.254,0.262]
