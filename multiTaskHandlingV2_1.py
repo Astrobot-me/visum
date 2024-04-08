@@ -1,11 +1,10 @@
 import threading
-
 import time,math
 import pygame
 import cv2
 
-pygame.mixer.init()
 
+pygame.mixer.init()
 pygame.mixer.music.set_volume(1.0)
 
 index = 0
@@ -21,6 +20,11 @@ COLOR = (51, 134, 0)
 
 # cv = cv2.VideoCapture("resources/simpleman.mp4")
 cv = cv2.VideoCapture(index,cv2.CAP_DSHOW)
+
+# width: 642px;
+# height: 491px;
+
+
 
 # Face Detection Model
 face_cascade = cv2.CascadeClassifier("CascadeClassifiers/haarcascade_frontalface_default.xml")
