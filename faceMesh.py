@@ -5,7 +5,7 @@ import math
 
 class GetFaceMesh:
 
-    def __init__(self, staticMode=True, maxFaces=1, minDetectionCon=0.5, minTrackCon=0.5,landmark=False):
+    def __init__(self, staticMode=False, maxFaces=1, minDetectionCon=0.5, minTrackCon=0.5,landmark=False):
     
         self.staticMode = staticMode
         self.maxFaces = maxFaces

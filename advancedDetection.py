@@ -2,12 +2,14 @@ import cv2
 import time
 import mediapipe as mp
 import pygame
+import openpyxl
 
 
 from faceMesh import GetFaceMesh
 
 ear = [0.262,0.256,0.255,0.254,0.262]
-
+excel_obj = openpyxl.load_workbook("datalog.xlsv")
+datasheet = excel_obj.active
 # idList = [22,23,25]
 RIGHT_EYE_IDs = [33,  160, 158, 136, 153, 144]
 #                p1  ,p4 , p6 , p2,  p5,  p3
