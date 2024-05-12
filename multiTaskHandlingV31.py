@@ -5,10 +5,13 @@ import pygame
 from faceMesh import GetFaceMesh
 import openpyxl
 import threading
+import serial
 
 pygame.mixer.init()
 
 pygame.mixer.music.set_volume(1.0)
+
+ser = serial.Serial('COM3', 9600)
 
 excel_obj = openpyxl.load_workbook("datalog4.xlsx")
 datasheet = excel_obj.active
@@ -23,6 +26,7 @@ count = 0.0
 NOSE_THRESHOLD = 30
 RIGHTEYE_THRESHOLD = 20
 LEFTEYE_THRESHOLD = 20
+EAR_THRESHOLD = 0.270
 ear = [0.262,0.256,0.255,0.254,0.262]
 RIGHT_EYE_IDs = [33,  160, 158, 136, 153, 144]
 LEFT_EYE_IDs = [362, 385, 387, 263, 373, 380]
@@ -46,18 +50,27 @@ def CounterClock():
         if OBJECT_STATUS == "EYE_PRESENT":
             time_started = time.time()
             count = 0.0
+            state = 1
+            ser.write(str(state).encode())  # Send the state to Arduino
+            print(f'Sent state {state} to Arduino')
             print("Counter set to zero")
             print("[SAFE & SOUND]")
 
 
         if(count > CAUTION_LIMIT and OBJECT_STATUS == "EYE_ABSENT"): 
             pygame.mixer.music.load("resources/airplane-cockpit-alarm.mp3")
+            state = 3
+            ser.write(str(state).encode())  # Send the state to Arduino
+            print(f'Sent state {state} to Arduino')
             print("[ACCIDENT HAZARD]")
             pygame.mixer.music.play()
 
         elif(count != 0):
             if ( count > 5 or count<CAUTION_LIMIT ): 
                 pygame.mixer.music.load("resources/cabinchime.mp3")
+                state = 2
+                ser.write(str(state).encode())  # Send the state to Arduino
+                print(f'Sent state {state} to Arduino')
                 print("[CAUTION]")
                 pygame.mixer.music.play()
 
@@ -174,11 +187,11 @@ def computeVideoEAR():
 
             newEAR = sum(ear)/len(ear)
 
-            try:
-                writeData(RIGHT_length1,RIGHT_length2,RIGHT_length3,EAR_ASPECT_RATIO_RIGHT,LEFT_length1,LEFT_length2,LEFT_length3,EAR_ASPECT_RATIO_LEFT,AVERAGE_EAR,newEAR,Nose_length)
-                sheet_index = sheet_index+1
-            except:
-                pass
+            # try:
+            #     # writeData(RIGHT_length1,RIGHT_length2,RIGHT_length3,EAR_ASPECT_RATIO_RIGHT,LEFT_length1,LEFT_length2,LEFT_length3,EAR_ASPECT_RATIO_LEFT,AVERAGE_EAR,newEAR,Nose_length)
+            #     # sheet_index = sheet_index+1
+            # except:
+            #     pass
 
             print(f"Avarage EAR : {newEAR}")
 
@@ -187,7 +200,7 @@ def computeVideoEAR():
 
 
 
-            if newEAR < 0.270:
+            if newEAR < EAR_THRESHOLD:
                 # BLINK_COUNT = BLINK_COUNT + 1
                 OBJECT_STATUS = "EYE_ABSENT"
                 print(f"STATUS: {OBJECT_STATUS}")
