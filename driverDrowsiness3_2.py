@@ -6,7 +6,7 @@ from faceMesh import GetFaceMesh
 import openpyxl
 import threading
 import serial
-from cvzone import PlotModule
+from PlotMod import LivePlot
 import datetime
 
 pygame.mixer.init()
@@ -15,7 +15,7 @@ pygame.mixer.music.set_volume(1.0)
 
 
 
-live_plot = PlotModule.LivePlot(w=300,h=400, yLimit=[0, 50], interval=0.1,xP=26)
+live_plot = LivePlot(w=300,h=400, yLimit=[0, 50], interval=0.1,xP=26)
 
 excel_obj = openpyxl.load_workbook("datalog4.xlsx")
 datasheet = excel_obj.active
