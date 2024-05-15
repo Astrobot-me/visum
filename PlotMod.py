@@ -11,7 +11,7 @@ class LivePlot:
     """
 
     def __init__(self, w=640, h=480, yLimit=[0, 100],
-                 interval=0.001, invert=True, char='Y',xP = 0):
+                 interval=0.001, invert=True, char='EAR',xP = 0):
         """
         Initialize the LivePlot object.
 
@@ -28,7 +28,7 @@ class LivePlot:
         self.h = h
         self.invert = invert
         self.interval = interval
-        self.char = char[0]
+        self.char = char
         self.imgPlot = np.zeros((self.h, self.w, 3), np.uint8)
         self.imgPlot[:] = 225, 225, 225
         self.xP = xP
@@ -91,7 +91,7 @@ class LivePlot:
             y_label = int(self.yLimit[1] - ((y / 50) * ((self.yLimit[1] - self.yLimit[0]) / (self.h / 50))))
             cv2.putText(self.imgPlot, str(y_label), (10, y), cv2.FONT_HERSHEY_PLAIN, 1, (150, 150, 150), 1)
 
-        cv2.putText(self.imgPlot, self.char, (self.w - 100, self.h - 25), cv2.FONT_HERSHEY_PLAIN, 5, (150, 150, 150), 5)
+        cv2.putText(self.imgPlot, self.char, (self.w - 160, self.h - 25), cv2.FONT_HERSHEY_PLAIN, 3, (150, 150, 150), 3)
 
 
 if __name__ == "__main__":
