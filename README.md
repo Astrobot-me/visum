@@ -14,7 +14,7 @@
 - **Eye Aspect Ratio Calculation**: MediaPipe allows for the calculation of the eye aspect ratio, a critical factor in assessing fatigue.
 
 
-[Demo Video](https://youtu.be/LiVuiS0SveM) 
+# <a href="https://youtu.be/LiVuiS0SveM" target="_blank">Demo Video </a> 
 
 ## Project Screenshots
 
