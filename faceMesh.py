@@ -39,7 +39,7 @@ class GetFaceMesh:
                     x, y = int(lm.x * img_width), int(lm.y * img_height)
                     face.append([x, y])
                 faces.append(face)
-        return img, faces
+        return img, faces, self.results
 
     def findDistance(self,point1, point2, img=None):
         """

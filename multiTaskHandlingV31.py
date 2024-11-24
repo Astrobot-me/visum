@@ -6,12 +6,17 @@ from faceMesh import GetFaceMesh
 import openpyxl
 import threading
 import serial
+from headPose import getHeadTilt
+from YawnAlert import getYawnStatus,YawnDetection
 
 pygame.mixer.init()
 
 pygame.mixer.music.set_volume(1.0)
 
-ser = serial.Serial('COM3', 9600)
+try:
+    ser = serial.Serial('COM3', 9600)
+except:
+    pass
 
 excel_obj = openpyxl.load_workbook("datalog4.xlsx")
 datasheet = excel_obj.active
@@ -30,16 +35,17 @@ EAR_THRESHOLD = 0.270
 ear = [0.262,0.256,0.255,0.254,0.262]
 RIGHT_EYE_IDs = [33,  160, 158, 136, 153, 144]
 LEFT_EYE_IDs = [362, 385, 387, 263, 373, 380]
-
+YAWNING_STATUS = "NOT_YAWNING"
 
 meshDraw = GetFaceMesh()
 cv = cv2.VideoCapture(0,cv2.CAP_DSHOW)
-
+yawndetection = YawnDetection()
 
 def CounterClock():
     global OBJECT_STATUS
     global count
     global time_started
+    
 
     while True:
         time_now = time.time()
@@ -51,7 +57,7 @@ def CounterClock():
             time_started = time.time()
             count = 0.0
             state = 1
-            ser.write(str(state).encode())  # Send the state to Arduino
+            # ser.write(str(state).encode())  # Send the state to Arduino
             print(f'Sent state {state} to Arduino')
             print("Counter set to zero")
             print("[SAFE & SOUND]")
@@ -60,7 +66,7 @@ def CounterClock():
         if(count > CAUTION_LIMIT and OBJECT_STATUS == "EYE_ABSENT"): 
             pygame.mixer.music.load("resources/airplane-cockpit-alarm.mp3")
             state = 3
-            ser.write(str(state).encode())  # Send the state to Arduino
+            # ser.write(str(state).encode())  # Send the state to Arduino
             print(f'Sent state {state} to Arduino')
             print("[ACCIDENT HAZARD]")
             pygame.mixer.music.play()
@@ -69,7 +75,7 @@ def CounterClock():
             if ( count > 5 or count<CAUTION_LIMIT ): 
                 pygame.mixer.music.load("resources/cabinchime.mp3")
                 state = 2
-                ser.write(str(state).encode())  # Send the state to Arduino
+                # ser.write(str(state).encode())  # Send the state to Arduino
                 print(f'Sent state {state} to Arduino')
                 print("[CAUTION]")
                 pygame.mixer.music.play()
@@ -83,6 +89,7 @@ def computeVideoEAR():
     global RIGHT_EYE_IDs
     global LEFT_EYE_IDs
     global datasheet,sheet_index
+    global YAWNING_STATUS
 
     while True:
 
@@ -92,7 +99,9 @@ def computeVideoEAR():
         isFrame,img = cv.read()
 
         if isFrame:
-            img,faces = meshDraw.findFaceMesh(img,draw=True)
+            img,faces,resultSet = meshDraw.findFaceMesh(img,draw=True)
+            img = getHeadTilt(resultSet,img)
+            _ ,YAWNING_STATUS = yawndetection.getYawnStatusText(resultSet,img)
 
         if faces:
             face = faces[0]
@@ -236,6 +245,7 @@ def writeData(R_l1,R_l2,R_l3,R_EAR,L_l1,L_l2,L_l3,L_EAR,A_EAR,List_EAR,nose):
         datasheet[f"H{sheet_index}"] = L_EAR;
 
         datasheet[f"I{sheet_index}"] = A_EAR;
+        
         datasheet[f"J{sheet_index}"] = List_EAR;
 
 

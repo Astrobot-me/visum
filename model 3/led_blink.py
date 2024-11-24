@@ -16,4 +16,4 @@ while True:
     time.sleep(3) 
     
 
-        # Wait for 8 seconds before sending the next state
+        # Wait for 8 sq

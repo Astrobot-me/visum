@@ -153,7 +153,7 @@ def computeVideoEAR():
         isFrame,img = cv.read()
 
         if isFrame:
-            img,faces = meshDraw.findFaceMesh(img,draw=True)
+            img,faces,result = meshDraw.findFaceMesh(img,draw=True)
 
         if faces:
             face = faces[0]
